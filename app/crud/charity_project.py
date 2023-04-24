@@ -4,7 +4,7 @@ from typing import Optional, List, Dict
 
 from fastapi import HTTPException
 from fastapi.encoders import jsonable_encoder
-from sqlalchemy import func, select
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.crud.base import CRUDBase
@@ -85,14 +85,13 @@ class CRUDCharityProject(CRUDBase):
         )
         return db_project_id.scalars().first()
 
-    
     async def get_projects_by_completion_rate(
         self,
         session: AsyncSession
     ) -> List[Dict[str, str]]:
         projects = await session.execute(
             select(CharityProject).where(
-                CharityProject.fully_invested == True
+                CharityProject.fully_invested == True  # noqa
             )
         )
         response = [
